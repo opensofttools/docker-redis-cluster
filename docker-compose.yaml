@@ -11,7 +11,7 @@ networks:
 services:
 
   redis-cluster:
-    image: redis:latest
+    image: redis:5.0.9
     command: redis-cli -p 6379 --cluster -a test123 create 10.0.0.11:6379 10.0.0.12:6380 10.0.0.13:16379 10.0.0.14:16380 10.0.0.15:26379 10.0.0.16:26380 --cluster-replicas 1 --cluster-yes
     depends_on:
       - redis-1
@@ -36,7 +36,7 @@ services:
     ports:
       - 6379:6379
     volumes:
-      - /tmp/6379/data:/data
+      - /data/6379/data:/data
 
   redis-2:
     image: redis-cluster-node
@@ -49,7 +49,7 @@ services:
     ports:
       - 6380:6379
     volumes:
-      - /tmp/6380/data:/data
+      - /data/6380/data:/data
 
   redis-3:
     image: redis-cluster-node
@@ -62,7 +62,7 @@ services:
     ports:
       - 16379:6379
     volumes:
-      - /tmp/16379/data:/data
+      - /data/16379/data:/data
 
   redis-4:
     image: redis-cluster-node
@@ -75,7 +75,7 @@ services:
     ports:
       - 16380:6379
     volumes:
-      - /tmp/16380/data:/data
+      - /data/16380/data:/data
 
   redis-5:
     image: redis-cluster-node
@@ -88,7 +88,7 @@ services:
     ports:
       - 26379:6379
     volumes:
-      - /tmp/26379/data:/data
+      - /data/26379/data:/data
 
   redis-6:
     image: redis-cluster-node
@@ -101,4 +101,4 @@ services:
     ports:
       - 26380:6379
     volumes:
-      - /tmp/26380/data:/data
+      - /data/26380/data:/data
