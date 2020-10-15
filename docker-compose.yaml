@@ -12,7 +12,7 @@ services:
 
   redis-cluster:
     image: redis:latest
-    command: redis-cli -p 7001 --cluster create 10.0.0.11:7001 10.0.0.12:7002 10.0.0.13:7003 10.0.0.14:7004 10.0.0.15:7005 10.0.0.16:7006 --cluster-replicas 1 --cluster-yes
+    command: redis-cli -p 6379 --cluster -a test123 create 10.0.0.11:6379 10.0.0.12:6380 10.0.0.13:16379 10.0.0.14:16380 10.0.0.15:26379 10.0.0.16:26380 --cluster-replicas 1 --cluster-yes
     depends_on:
       - redis-1
       - redis-2
@@ -27,60 +27,78 @@ services:
   redis-1:
     build: ./redis
     image: redis-cluster-node
+    restart: always
     environment:
-      X_REDIS_PORT: 7001
+      X_REDIS_PORT: 6379
     networks:
       redisnet:
         ipv4_address: 10.0.0.11
     ports:
-      - 7001:6379
+      - 6379:6379
+    volumes:
+      - /tmp/6379/data:/data
 
   redis-2:
     image: redis-cluster-node
+    restart: always
     environment:
-      X_REDIS_PORT: 7002
+      X_REDIS_PORT: 6380
     networks:
       redisnet:
         ipv4_address: 10.0.0.12
     ports:
-      - 7002:6379
+      - 6380:6379
+    volumes:
+      - /tmp/6380/data:/data
 
   redis-3:
     image: redis-cluster-node
+    restart: always
     environment:
-      X_REDIS_PORT: 7003
+      X_REDIS_PORT: 16379
     networks:
       redisnet:
         ipv4_address: 10.0.0.13
     ports:
-      - 7003:6379
+      - 16379:6379
+    volumes:
+      - /tmp/16379/data:/data
 
   redis-4:
     image: redis-cluster-node
+    restart: always
     environment:
-      X_REDIS_PORT: 7004
+      X_REDIS_PORT: 16380
     networks:
       redisnet:
         ipv4_address: 10.0.0.14
     ports:
-      - 7004:6379
+      - 16380:6379
+    volumes:
+      - /tmp/16380/data:/data
 
   redis-5:
     image: redis-cluster-node
+    restart: always
     environment:
-      X_REDIS_PORT: 7005
+      X_REDIS_PORT: 26379
     networks:
       redisnet:
         ipv4_address: 10.0.0.15
     ports:
-      - 7005:6379
+      - 26379:6379
+    volumes:
+      - /tmp/26379/data:/data
 
   redis-6:
     image: redis-cluster-node
+    restart: always
     environment:
-      X_REDIS_PORT: 7006
+      X_REDIS_PORT: 26380
     networks:
       redisnet:
         ipv4_address: 10.0.0.16
     ports:
-      - 7006:6379
+      - 26380:6379
+    volumes:
+      - /tmp/26380/data:/data

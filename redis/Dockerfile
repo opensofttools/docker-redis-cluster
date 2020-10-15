@@ -1,4 +1,4 @@
-FROM redis:latest
+FROM redis:5.0.9
 
 MAINTAINER Tommy Elmesewdy <r1tommy@gmail.com>
 
