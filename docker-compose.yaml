@@ -1,18 +1,18 @@
 version: '3'
 
-networks:
-
-  redisnet:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.0.0.0/16
+#networks:
+#
+#  redisnet:
+#    driver: bridge
+#    ipam:
+#      config:
+#        - subnet: 10.0.0.0/16
 
 services:
 
   redis-cluster:
     image: redis:5.0.9
-    command: redis-cli -p 6379 --cluster -a test123 create 10.0.0.11:6379 10.0.0.12:6380 10.0.0.13:16379 10.0.0.14:16380 10.0.0.15:26379 10.0.0.16:26380 --cluster-replicas 1 --cluster-yes
+    command: redis-cli -p 6379 -h 172.16.0.23 -a test123 --cluster create 172.16.0.23:6379 172.16.0.23:6380 172.16.0.23:26379 172.16.0.23:26380 172.16.0.23:46379 172.16.0.23:46380 --cluster-replicas 1 --cluster-yes
     depends_on:
       - redis-1
       - redis-2
@@ -20,9 +20,7 @@ services:
       - redis-4
       - redis-5
       - redis-6
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.2
+    network_mode: host
 
   redis-1:
     build: ./redis
@@ -30,9 +28,7 @@ services:
     restart: always
     environment:
       X_REDIS_PORT: 6379
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.11
+    network_mode: host
     ports:
       - 6379:6379
     volumes:
@@ -43,11 +39,9 @@ services:
     restart: always
     environment:
       X_REDIS_PORT: 6380
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.12
+    network_mode: host
     ports:
-      - 6380:6379
+      - 6380:6380
     volumes:
       - /data/6380/data:/data
 
@@ -55,12 +49,10 @@ services:
     image: redis-cluster-node
     restart: always
     environment:
-      X_REDIS_PORT: 16379
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.13
+      X_REDIS_PORT: 26379
+    network_mode: host
     ports:
-      - 16379:6379
+      - 26379:26379
     volumes:
       - /data/16379/data:/data
 
@@ -68,12 +60,10 @@ services:
     image: redis-cluster-node
     restart: always
     environment:
-      X_REDIS_PORT: 16380
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.14
+      X_REDIS_PORT: 26380
+    network_mode: host
     ports:
-      - 16380:6379
+      - 26380:26380
     volumes:
       - /data/16380/data:/data
 
@@ -81,12 +71,10 @@ services:
     image: redis-cluster-node
     restart: always
     environment:
-      X_REDIS_PORT: 26379
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.15
+      X_REDIS_PORT: 46379
+    network_mode: host
     ports:
-      - 26379:6379
+      - 46379:46379
     volumes:
       - /data/26379/data:/data
 
@@ -94,11 +82,9 @@ services:
     image: redis-cluster-node
     restart: always
     environment:
-      X_REDIS_PORT: 26380
-    networks:
-      redisnet:
-        ipv4_address: 10.0.0.16
+      X_REDIS_PORT: 46380
+    network_mode: host
     ports:
-      - 26380:6379
+      - 46380:46380
     volumes:
       - /data/26380/data:/data
